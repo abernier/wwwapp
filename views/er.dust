@@ -1,0 +1,22 @@
+{>"layout.dust"/}
+
+{<title}{status}{/title}
+{<page}page-er{/page}
+
+{<main}
+  <h1>
+    <span class="message">
+      {@select key="{status}"}
+        {! {@eq value="404"}Page introuvable{/eq}
+        {@eq value="403"}Vous n'êtes pas autorisé(e) à consulter cette page{/eq} !}
+        {@none}{message}{/none}
+      {/select}
+    </span>
+  </h1>
+
+  {@eq key="{settings.env}" value="development"}
+    {#stack}
+    <pre class="stack">{.}</pre>
+    {/stack}
+  {/eq}
+{/main}

@@ -1,0 +1,82 @@
+#!/bin/sh
+
+# https://www.tutorialspoint.com/unix/unix-special-variables.htm
+#echo "$0"
+#echo "$#"
+
+# Absolute path of that script (see: https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself)
+DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPTPATH=$DIR/scripts
+
+commands="help config dev start test test-unit test-functional deploy"
+
+./bin/env $DIR/env*.sh | ./bin/stripenv >/tmp/.wwwappenv
+#echo ".wwwappenv contents:"
+#cat /tmp/.wwwappenv
+
+show_help() {
+    cat << EOF
+Usage: ${0##*/} COMMAND
+
+where COMMAND is one of:
+    $commands
+
+wwwapp -h           Display this help message
+wwwapp help <term>  Search for help on <term>
+EOF
+
+    exit 1
+}
+
+#
+# Deal with params (see: http://mywiki.wooledge.org/BashFAQ/035)
+#
+
+while [ $# -gt 0 ]; do
+    case $1 in
+        -h|-\?|--help)
+            show_help
+            ;;
+        *) # No more options, so break out of the loop.
+            break
+    esac
+
+    shift
+done
+
+#
+# Find COMMAND among $commands
+#
+
+command=
+for i in $commands; do
+    if [ "$1" = "$i" ]; then
+        command="$1"
+        break
+    fi
+done
+
+#
+# run corresponding COMMAND script
+#
+
+if [ -z "$command" ]; then
+    printf '"%s" command not found\n\n' $command
+    show_help
+else
+    shift
+
+    if [ "$command" = "help" ]; then
+        echo "help command not implemented yet"
+        exit 1;
+        # special case for "help" command
+        # if [ -z $1 ]; then
+        #     show_help
+        # else
+        #     echo "$SCRIPTPATH/../scripts/$1.sh --help"
+        # fi
+    else
+        # execute script and passing remaining args to it
+        $SCRIPTPATH/$command.sh $@ && exit 0 || exit 1
+    fi
+fi

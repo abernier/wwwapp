@@ -1,0 +1,5 @@
+<ul>
+{#_settings.messages.flash}
+{>"flash-item.dust"/}
+{/_settings.messages.flash}
+</ul>

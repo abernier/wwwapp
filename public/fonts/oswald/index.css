@@ -1,0 +1,66 @@
+/* https://fonts.google.com/specimen/oswald?selection.family=oswald:300,400,400i,500,700 */
+
+/* light */
+/*@font-face {
+    font-family: 'oswald';
+    src: url('oswald-light-webfont.woff2') format('woff2'),
+         url('oswald-light-webfont.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}*/
+/* light italic */
+/*@font-face {
+    font-family: 'oswald';
+    src: url('oswald-lightitalic-webfont.woff2') format('woff2'),
+         url('oswald-lightitalic-webfont.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+}*/
+/* normal */
+@font-face {
+    font-family: 'oswald';
+    src: url('oswald-regular-webfont.woff2') format('woff2'),
+         url('oswald-regular-webfont.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+/* nornal italic */
+/*@font-face {
+    font-family: 'oswald';
+    src: url('oswald-italic-webfont.woff2') format('woff2'),
+         url('oswald-italic-webfont.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+}*/
+/* medium */
+@font-face {
+    font-family: 'oswald';
+    src: url('oswald-medium-webfont.woff2') format('woff2'),
+         url('oswald-medium-webfont.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+/* medium italic */
+/*@font-face {
+    font-family: 'oswald';
+    src: url('oswald-mediumitalic-webfont.woff2') format('woff2'),
+         url('oswald-mediumitalic-webfont.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+}*/
+/* bold */
+@font-face {
+    font-family: 'oswald';
+    src: url('oswald-bold-webfont.woff2') format('woff2'),
+         url('oswald-bold-webfont.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+/* bold italic */
+@font-face {
+    font-family: 'oswald';
+    src: url('oswald-bolditalic-webfont.woff2') format('woff2'),
+         url('oswald-bolditalic-webfont.woff') format('woff');
+    font-weight: 700;
+    font-style: italic;
+}

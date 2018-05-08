@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
+  <title>{title}</title>
+  {!<style type="text/css">
+  @media screen and (max-width:700px) {
+    #emailContainer {width:100%!important;} 
+    img {max-width:100%!important; height:auto!important;}
+  }
+  </style>!}
+  <link href="https://fonts.googleapis.com/css?family=Oswald:400,700" rel="stylesheet">
+</head>
+<body style="margin:0;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" id="bodyTable" style="font-family:Oswald,sans-serif; line-height:1.5;">
+    <tr>
+      <td align="center" valign="top">
+        <table id="emailContainer" border="0" cellpadding="0" cellspacing="0" width="700">
+          <tr>
+            <td align="left" valign="top">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td align="left" valign="top" width="100%">
+                    <h1 style="color:#15131e;">Welcome</h1>
+
+                    <p>
+                      <strong>Bonjour,</strong><br><br>
+                      Pour valider votre inscription, merci de cliquer sur le lien ci-dessous</strong>
+                    </p>
+                    <p>
+                      <a href="{confirmLink}" style="display:inline-block;padding-top:10px;padding-bottom:10px; padding-left:20px;padding-right:20px; border:2px solid transparent; border-radius:5px;background-color:#d73145;color:white;text-align:center; box-shadow:0 2px 2px rgba(0,0,0,.2);line-height:1.2; text-decoration:none;">Confirmer mon email</a>
+                    </p>
+                    
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

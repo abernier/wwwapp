@@ -1,0 +1,132 @@
+version: "3"
+services:
+
+  ##      ## ##      ## ##      ## 
+  ##  ##  ## ##  ##  ## ##  ##  ## 
+  ##  ##  ## ##  ##  ## ##  ##  ## 
+  ##  ##  ## ##  ##  ## ##  ##  ## 
+  ##  ##  ## ##  ##  ## ##  ##  ## 
+  ##  ##  ## ##  ##  ## ##  ##  ## 
+   ###  ###   ###  ###   ###  ###  
+
+  www:
+    image: wwwapp/www
+    env_file: /tmp/.wwwappenv
+    build:
+      context: .
+      args:
+        - wwwapp_env
+    command: sh -c 'dockerize -wait tcp://$$wwwapp_postgres_uri__hostname:$$wwwapp_postgres_uri__port -wait tcp://$$wwwapp_redis_uri__hostname:$$wwwapp_redis_uri__port -wait tcp://$$wwwapp_smtp_uri__hostname:$$wwwapp_smtp_uri__port sh -c "npm start"'
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    depends_on:
+      - postgres
+      - redis
+      - mailcatcher
+    # volumes:
+    #   - .:/home/node/app
+    #   - node_modules:/home/node/app/node_modules
+  postgres:
+    image: postgres:10.1-alpine
+    ports:
+      - "5432:5432"
+  redis:
+    image: redis:4.0.2-alpine
+    ports:
+      - "6379:6379"
+  mailcatcher:
+    image: tophfr/mailcatcher:0.6.5_2
+    ports:
+      - "1025:25"
+      - "1080:80"
+
+  ######## ########  ######  ######## 
+     ##    ##       ##    ##    ##    
+     ##    ##       ##          ##    
+     ##    ######    ######     ##    
+     ##    ##             ##    ##    
+     ##    ##       ##    ##    ##    
+     ##    ########  ######     ##    
+
+  test-functional:
+    image: wwwapp/test-functional
+    env_file: /tmp/.wwwappenv
+    environment:
+      - wwwapp_www_host__hostname=www
+      - wwwapp_recaptcha_id=
+    build:
+      context: .
+      args:
+        - wwwapp_env=development
+    command: sh -c 'dockerize -wait http://$$wwwapp_www_host__hostname:$$wwwapp_www_host__port -wait http://$$wwwapp_selenium_hub__hostname:$$wwwapp_selenium_hub__port -wait tcp://chrome:5900 -timeout 90s sh -c "make test-functional"'
+    depends_on:
+      - www
+      - mailcatcher
+      - selenium-hub
+      - chrome
+      #- firefox
+      - sc
+
+  # https://github.com/SeleniumHQ/docker-selenium
+  selenium-hub:
+    image: selenium/hub:3.8.1-aluminum
+    ports:
+      - "4444:4444"
+  chrome:
+    image: selenium/node-chrome-debug:3.8.1-aluminum
+    ports:
+      - "5900:5900"
+    depends_on:
+      - selenium-hub
+    links:
+      - selenium-hub:hub
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=selenium-hub
+      - HUB_PORT_4444_TCP_PORT=4444
+    volumes:
+      - /dev/shm:/dev/shm
+  firefox:
+    image: selenium/node-firefox-debug:3.8.1-aluminum
+    ports:
+      - "5901:5900"
+    depends_on:
+      - selenium-hub
+    links:
+      - selenium-hub:hub
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=selenium-hub
+      - HUB_PORT_4444_TCP_PORT=4444
+    shm_size: 2g
+
+  # https://github.com/abernier/docker-sauce-connect
+  sc:
+    image: abernier/docker-sauce-connect
+    env_file: /tmp/.wwwappenv
+    command: sh -c 'sc -u $$wwwapp_saucelabs_username -k $$wwwapp_saucelabs_accesskey'
+    ports:
+      - "4445:4445"
+
+  test-unit:
+    image: wwwapp/test-unit
+    env_file: /tmp/.wwwappenv
+    environment:
+      - wwwapp_recaptcha_id=
+    build:
+      context: .
+      args:
+        - wwwapp_env=development
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    command: sh -c 'dockerize -wait tcp://$$wwwapp_postgres_uri__hostname:$$wwwapp_postgres_uri__port -wait tcp://$$wwwapp_redis_uri__hostname:$$wwwapp_redis_uri__port -wait tcp://$$wwwapp_smtp_uri__hostname:$$wwwapp_smtp_uri__port sh -c "make test-unit"'
+    depends_on:
+      - postgres
+      - redis
+      - mailcatcher
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+
+volumes:
+  node_modules:

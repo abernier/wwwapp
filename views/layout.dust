@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{_settings.locale}">
+<head {+headattributes/}>
+  <meta charset=utf-8>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width{!,height=device-height!},minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no">
+  {!https://developers.google.com/chrome/mobile/docs/installtohomescreen!}
+  {!<meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">!}
+  <title>{+title/}</title>
+  <meta name="description" content="{+metaDescription/}">
+
+  {! https://developers.facebook.com/docs/sharing/webmasters !}
+  <meta property="og:url"         content="{@url href="{_settings.originalUrl}" absolute="true"/}">
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="Wwwapp">
+  <meta property="og:description" content="Wwwapp description lorem ipsum.">
+  <meta property="og:image"       content="{@url href="/share-fb.jpg" absolute="true" md5="true"/}">
+
+  {! favicon: https://realfavicongenerator.net !}
+  <link rel="apple-touch-icon" sizes="180x180" href="{@url href="/apple-touch-icon.png" md5="true"/}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{@url href="/favicon-32x32.png" md5="true"/}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{@url href="/favicon-16x16.png" md5="true"/}">
+  <link rel="manifest" href="{@url href="/site.webmanifest" md5="true"/}">
+  <link rel="mask-icon" href="{@url href="/safari-pinned-tab.svg" md5="true"/}" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  
+  <link rel="stylesheet" href="{@url href="/index.css" md5="true"/}">
+  <script src="{@url href="/head.js" md5="true"/}"></script>{! no CDN: don't serve it through cdn to avoid DNS lookup payload !}
+
+  <link rel="stylesheet" href="{@url href="/fonts/oswald/index.css" md5="true"/}">
+  {+head/}
+</head>
+<body class="{+page/}">
+
+  {! Flash messages !}
+  <aside id="flash">
+    {>"flash.dust"/}
+  </aside>
+
+  {+main/}
+
+  {@eq key="{settings.env}" value="production"}
+  <script>
+  if (!('console' in window)) {
+    window.console = {
+      log: function () {}
+    };
+  }
+  </script>
+  {/eq}
+
+  <script src="{@url href="/vendor.js" md5="true"/}"></script>
+  <script src="{@url href="/index.js" md5="true"/}"></script>
+  <script>
+  var $ = require('jquery');
+  var _ = require('lodash');
+
+  var settings = {_settings|js|s}; {! http://stackoverflow.com/questions/19379932/json-stringify-helper !}
+
+  var Wwwapp = require('Wwwapp');
+
+  var wwwapp = new Wwwapp(settings);
+  window.wwwapp = wwwapp;
+  </script>
+
+  {@eq key="{settings.env}" value="development"}
+  <script src="https://cdn.rawgit.com/caldwell/renderjson/master/renderjson.js"></script>
+  <pre id="jsondump" style="text-align:left; line-height:1; font-size:10px; margin-top:0;margin-bottom:0; background:#333;color:#eee;padding:1em; max-width:100%;overflow:auto; white-space:normal;">
+  {.|js|s}
+  </pre>
+  <script>
+  (function () {
+    var jsondumpEl = document.getElementById('jsondump');
+    
+    renderjson.set_icons('+', '-').set_show_to_level(10);
+
+    var o = JSON.parse(jsondumpEl.innerText);
+    if ('_locals' in o) delete o._locals;
+    jsondumpEl.innerHTML = '';
+    jsondumpEl.appendChild(renderjson(o))
+  }).call(this);
+  </script>
+  {/eq}
+
+  {#_settings.conf.gtm}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={.}"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '{.}');
+  </script>
+  {/_settings.conf.gtm}
+  
+</body>
+</html>

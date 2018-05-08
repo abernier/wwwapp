@@ -1,0 +1,13 @@
+# https://docs.docker.com/engine/reference/builder/#dockerignore-file
+.DS_Store
+.nyc_output
+.git
+.gitignore
+.dockerignore
+.wwwapprc
+coverage
+docker-compose*.yml
+Dockerfile*
+node_modules
+env.sh
+*.log

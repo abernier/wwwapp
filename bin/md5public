@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+var o = {};
+
+var path = require('path');
+var p = path.resolve(__dirname, '../public');
+
+var fs = require('fs');
+var crypto = require('crypto');
+
+var findit = require('findit');
+var finder = findit(p);
+function push(file) {
+  var fileContent = fs.readFileSync(file, 'utf-8');
+  var md5 = crypto.createHash('md5');
+  var hash = md5.update(fileContent).digest("hex");
+
+  o['/' + path.relative(p, file)] = hash;
+}
+finder.on('file', push).on('end', function () {
+  console.log(JSON.stringify(o));
+});

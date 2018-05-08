@@ -1,0 +1,40 @@
+#!/bin/sh
+
+
+
+# Absolute path of that script (see: https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself)
+# DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+
+#
+# 1. Extract all wwwapp_* environment/shell variables
+#
+
+regex="^wwwapp_"
+
+ENVFILE=$(mktemp /tmp/env.XXXXXXXXXX)
+# env | grep "$regex" | while read LINE; do
+#   key="$(echo "$LINE" | cut -d= -f1)"
+#   val="$(echo "$LINE" | cut -d= -f2)"
+#   echo "$key=\"$val\""
+# done >"$ENVFILE"
+set |grep "$regex" >"$ENVFILE"
+#cat $ENVFILE
+
+#
+# 2. Source in order:
+#   - all env*.sh files passed in arguments
+#   - generated $ENVFILE from 1
+#
+
+for i in $@; do
+  # echo "file: $i"
+  test -f "$i" && . "$i";
+done
+. "$ENVFILE"
+
+# set |grep "$regex" | while read LINE; do
+#   key="$(echo "$LINE" | cut -d= -f1)"
+#   val="$(echo "$LINE" | cut -d= -f2)"
+#   echo "$key=\"$val\""
+# done
+set | grep "$regex"

@@ -1,0 +1,226 @@
+fs = 18px
+lh = 1.2
+pad = 1em
+mww = 73%
+//pp = 100%/18
+pp = 1.5em
+pp2 = (1vw * 100 * 1/18)
+
+$darkblue = #15131E
+$darkgray = #1C1D1E
+$red = #d73145;
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display:block;
+}
+
+html.no-js .js, // hide `js` elements when JS is not available (or not ready)
+html.js .no-js { // hide `no-js` elements when js become available
+  display:none;
+}
+
+// nearestMultiple(11.4 / 5) * 5 => 15
+nearestMultiple(i, j) {
+  // http://stackoverflow.com/questions/9280847/round-a-variable-up-to-the-next-closest-multiple-of-x
+  return unit(ceil(unit(i, '') / unit(j, '')) * unit(j, ''), unit(i));
+}
+
+c() {
+  padding-left:pp;padding-right:pp;
+  @media (min-width:1024px) {padding-left:pp2;padding-right:pp2;}
+
+  /*@media (min-width:1600px) {
+    padding-left:0;padding-right:0;
+    max-width:mww; margin-left:auto;margin-right:auto;
+  }*/
+}
+.c {
+  c()
+}
+
+/*wide() {
+  w = (100% * 100/(100 - pp*2));
+ 
+  width:w;
+  margin-left:((100% - w)/2);
+  @media (min-width:1600px) {
+    w = (100% * 100/mww)
+    width:w;
+    margin-left:((100% - w)/2);
+  }
+}
+:not(html) .wide {
+  wide()
+}*/
+
+px2em(px, fs=$fs) {
+  return 1em * (px/fs)
+}
+
+ratiobloc(w, h) {
+  padding-top:(100% * h/w);
+  
+  position:relative;
+  >* {position:absolute;left:0;right:0;top:0;bottom:0;}
+}
+
+cf() {
+  &:before,
+  &:after {content:" "; display:table;}
+    
+  &:after {clear:both;}
+} 
+.cf {
+  cf()
+}
+
+subh() {
+  margin-bottom:0;
+  +* {margin-top:0;}
+}   
+.subh {
+  subh()
+}
+
+glass() {
+  position:relative;
+  &:after {content:""; position:absolute;left:0;right:0;top:0;bottom:0;}
+}
+
+vcenter() {
+  height:100%; white-space:nowrap;word-spacing:-.25em;
+  &:before {content:"";display:inline-block;vertical-align:middle; width:0;height:100%;}
+  >* {display:inline-block;vertical-align:middle; white-space:normal;word-spacing:normal;}
+}    
+.vcenter {
+  vcenter()
+}
+
+// Grid (see: http://codepen.io/abernier/pen/Ibwov)
+gridgutter=1.5rem // ~line-height
+gridcols=4 // mobile-1st
+grid(x, n=gridcols, absolute=true) {
+  return "calc(%s * (%s / %s))" % (x (absolute ? 100vw : 100%) n)
+}
+// helper for inner-padding
+gridpad(i=gridgutter) {
+  padding-left:(i/2); padding-right:@padding-left; box-sizing:border-box;
+}
+
+*, *:before, *:after {box-sizing:border-box;}
+
+body {
+  margin:0; line-height:lh;
+  font:400 100%/lh "oswald", arial, sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+.h {line-height:1.2;}
+
+.h1 {
+  line-height:1;
+  
+  font-size:(100% * 30px/fs);
+  @media (min-width:1024px) {font-size:200%;}
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  &.h1 {font-weight:normal;}
+}
+
+.h2 {font-size:110%;}
+
+/* http://codepen.io/abernier/pen/ALRGLB */
+$fs = fs;
+fluidfs($fsmin=16px, $fsmax=32px, $wmin=320px, $wmax=2500px) {
+  a = unit($fsmin/$fs, em)
+  b = unit($fsmax - $fsmin, '')
+  c = $wmin
+  d = unit($wmax - $wmin, '')
+  
+  @media (min-width:$wmin) {
+    font-size:"calc(%s + %s * (100vw - %s) / %s)" % (a b c d)
+  }
+}
+:root {font-size:$fs;}
+body {
+  fluidfs($wmin:320px,$fsmin:17px, $wmax:375px,$fsmax:$fs);
+  fluidfs($wmin:375px,$fsmin:$fs, $wmax:1920px,$fsmax:40px);
+  //fluidfs($wmin:1920px,$fsmin:20px, $wmax:2500px,$fsmax:28px);
+}
+
+svg {fill:currentColor;}
+
+svg,
+object,
+img,
+video {max-width:100%;}
+
+//img[src][width],
+//svg[width],
+//object[type="image/svg+xml"][data][width] {height:auto;}
+
+// .img {display:inline-block; background-position:center;background-size:cover; background-repeat:no-repeat;}
+// .img >img {display:block; visibility:hidden;}
+// .img.contain {background-size:contain;}
+
+a {color:inherit; text-decoration:none;}
+
+svg.icon {
+  &,
+  +.icon-text {display:inline-block;vertical-align:middle;}
+  
+  width:1em;height:1em;
+  fill:currentColor;
+}
+a.icon {
+  glass();
+}
+
+//strong {color:$vertfluo;}
+
+hr {
+  border-style:solid;border-width:1px;border-top:0; color:$whitegrey;
+  margin-top:1.5em;margin-bottom:@margin-top;
+}
+
+p() {
+  display:block; margin-top:1em;margin-bottom:@margin-top;
+}
+p,
+.p {
+  p()
+}
+
+//
+// START CODING HERE :)
+//
+
+/*
+##     ##  #######  ##     ## ######## 
+##     ## ##     ## ###   ### ##       
+##     ## ##     ## #### #### ##       
+######### ##     ## ## ### ## ######   
+##     ## ##     ## ##     ## ##       
+##     ## ##     ## ##     ## ##       
+##     ##  #######  ##     ## ######## 
+*/
+
+.page-home {
+  
+}

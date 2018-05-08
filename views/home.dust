@@ -1,0 +1,8 @@
+{>"layout.dust"/}
+
+{<title}Wwwapp{/title}
+{<page}page-home{/page}
+
+{<main}
+{>"home-nolayout.dust"/}
+{/main}

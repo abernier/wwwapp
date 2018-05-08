@@ -1,0 +1,31 @@
+#!/usr/local/bin/node
+
+var flat = require('flat');
+var _ = require('underscore');
+
+var argv = require('optimist')
+      .usage('Get config value.\nUsage: $0 [<key>]')
+
+      .argv
+    ;
+
+var conf = require('../conf');
+
+var flattenConf  = flat(_.omit(conf, ['_', 'config', 'configs']), {delimiter: '__'});
+
+var key = argv._[0] || "";
+
+if (!key) {
+	ret = Object.keys(flattenConf).forEach(function (key) {
+		console.log(key);
+	});
+} else {
+	if (key in flattenConf) {
+		var value = flattenConf[key];
+	} else {
+		console.error("key '%s' not found", key);
+		return process.exit(1);
+	}
+
+	console.log(value);
+}

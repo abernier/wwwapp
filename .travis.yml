@@ -1,0 +1,42 @@
+language: generic
+
+sudo: required
+services:
+  - docker
+
+#https://docs.travis-ci.com/user/docker/#Using-Docker-Compose
+# before_install:
+#   - sudo rm /usr/local/bin/docker-compose
+#   - curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > docker-compose
+#   - chmod +x docker-compose
+#   - sudo mv docker-compose /usr/local/bin
+
+# env:
+#   global:
+#     - DOCKER_CACHE=/home/travis/docker
+# cache:
+#   directories:
+#     - ${DOCKER_CACHE}
+
+# Cache all docker images see: https://github.com/travis-ci/travis-ci/issues/5358#issuecomment-248915326
+# before_cache:
+#   - mkdir -p ${DOCKER_CACHE} && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}' | xargs -n 2 -t sh -c 'test -e ${DOCKER_CACHE}/$1.tar.gz || docker save $0 | gzip -2 > ${DOCKER_CACHE}/$1.tar.gz'
+# before_install:
+#   # Load cached docker images
+#   - if [[ -d ${DOCKER_CACHE} ]]; then ls ${DOCKER_CACHE}/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
+
+install:
+  # stop postgresql on Travis and wait it has shutdown (see: https://github.com/travis-ci/travis-ci/issues/4842#issuecomment-311527059)
+  - sudo service postgresql stop
+  - while sudo lsof -Pi :5432 -sTCP:LISTEN -t; do sleep 1; done
+
+script:
+  - sh -c "./wwwapp test"
+
+# deploy:
+#   provider: script
+#   script: sh -c "./wwwapp deploy --env=$TRAVIS_BRANCH"
+#   skip_cleanup: true
+#   on:
+#     all_branches: true
+
