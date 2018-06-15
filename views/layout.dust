@@ -66,22 +66,10 @@
   </script>
 
   {@eq key="{settings.env}" value="development"}
-  <script src="https://cdn.rawgit.com/caldwell/renderjson/master/renderjson.js"></script>
-  <pre id="jsondump" style="text-align:left; line-height:1; font-size:10px; margin-top:0;margin-bottom:0; background:#333;color:#eee;padding:1em; max-width:100%;overflow:auto; white-space:normal;">
-  {.|js|s}
+  {!<script src="https://cdn.rawgit.com/caldwell/renderjson/master/renderjson.js"></script>!}
+  <pre style="text-align:left; line-height:1; font-size:10px; margin-top:0;margin-bottom:0; background:#333;color:#eee;padding:1em; max-width:100%;overflow:auto; text-transform:none;">
+  {@prettyjson:. /}
   </pre>
-  <script>
-  (function () {
-    var jsondumpEl = document.getElementById('jsondump');
-    
-    renderjson.set_icons('+', '-').set_show_to_level(10);
-
-    var o = JSON.parse(jsondumpEl.innerText);
-    if ('_locals' in o) delete o._locals;
-    jsondumpEl.innerHTML = '';
-    jsondumpEl.appendChild(renderjson(o))
-  }).call(this);
-  </script>
   {/eq}
 
   {#_settings.conf.gtm}
