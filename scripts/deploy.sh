@@ -60,6 +60,7 @@ if [ ! -z "$herokuapp" ]; then
 	heroku container:release web --app $herokuapp || exit 1
 else
 	echo '$herokuapp is not defined, we cannot deploy to it.'
+	exit 1
 fi
 
 exit 0
