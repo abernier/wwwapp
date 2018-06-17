@@ -56,11 +56,8 @@ done
 if [ ! -z "$herokuapp" ]; then
 	heroku --version || exit 1
 
-	docker login --username=_ --password=$wwwapp_heroku_token registry.heroku.com || exit 1
-	docker images || exit 1
-    make clean && docker-compose build www
-	docker tag wwwapp/www registry.heroku.com/$herokuapp/web || exit 1
-	docker push registry.heroku.com/$herokuapp/web || exit 1
+	make clean && heroku container:push web --app $herokuapp || exit 1
+	heroku container:release web --app $herokuapp || exit 1
 else
 	echo '$herokuapp is not defined, we cannot deploy to it.'
 fi
