@@ -56,7 +56,7 @@ done
 if [ ! -z "$herokuapp" ]; then
 	heroku --version || exit 1
 
-	make clean && heroku container:push web --app $herokuapp || exit 1
+	make clean && heroku container:login && heroku container:push web --app $herokuapp || exit 1
 	heroku container:release web --app $herokuapp || exit 1
 else
 	echo '$herokuapp is not defined, we cannot deploy to it.'
