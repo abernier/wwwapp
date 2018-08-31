@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo "arguments: $@"
-
 # Absolute path of that script (see: https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself)
 # DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
@@ -27,7 +25,6 @@ set |grep "$regex" >"$ENVFILE"
 #
 
 for i in $@; do
-  echo "file: $i"
   test -f "$i" && . "$i";
 done
 . "$ENVFILE"
