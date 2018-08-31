@@ -28,7 +28,7 @@ set |grep "$regex" >"$ENVFILE"
 
 for i in $@; do
   echo "file: $i"
-  test -f "$i" && . "$i";
+  test -f "$i" && . "./$i";
 done
 . "$ENVFILE"
 
