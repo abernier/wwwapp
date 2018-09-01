@@ -4,9 +4,9 @@
     "postdeploy": "bin/heroku-appjson-postdeploy.sh"
   },
   "env": {
-
-
-
+    "HEROKU_API_KEY": {
+      "required": true
+    },
     "HEROKU_APP_NAME": {
       "description": "Heroku app to monitor"
     }
