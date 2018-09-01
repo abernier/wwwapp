@@ -5,6 +5,7 @@
   },
   "env": {
     "HEROKU_API_TOKEN": {
+      "required": true,
       "description": "API Key for your Heroku account. Check it in https://dashboard.heroku.com/account"
     },
     "HEROKU_APP_NAME": {
