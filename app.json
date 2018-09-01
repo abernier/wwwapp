@@ -1,6 +1,6 @@
 {
   "name": "wwwapp",
-  "stack": "docker",
+  "stack": "none",
   "scripts": {
     "postdeploy": "bin/heroku-appjson-postdeploy.sh"
   },
