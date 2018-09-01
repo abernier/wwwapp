@@ -34,7 +34,7 @@ sh -c "./wwwapp deploy --herokuapp=myapp"
 
 ### Nota-bene
 
-To enabled Saucelabs on Travis (https://travis-ci.com/goodenough/wwwapp/settings) :
+To enabled Saucelabs on Travis (https://travis-ci.org/goodenough/wwwapp/settings) :
 
 ```
 wwwapp_saucelabs_username: abernier_
