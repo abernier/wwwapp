@@ -12,3 +12,5 @@ curl -n -X PATCH https://api.heroku.com/apps/$HEROKU_APP_NAME/config-vars \
   -H "Content-Type: application/json" \
   -H "Accept: application/vnd.heroku+json; version=3" \
   -H "Authorization: Bearer $HEROKU_API_KEY"
+
+node -p "require('url').parse(process.env.REDIS_URL).host"
