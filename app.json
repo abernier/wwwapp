@@ -1,11 +1,17 @@
 {
   "name": "wwwapp",
+  "stack": "container",
   "scripts": {
     "postdeploy": "bin/heroku-appjson-postdeploy.sh"
   },
   "env": {
     "HEROKU_API_KEY": {
-      "required": true
+
+
+
+      "required": true,
+      "description": "API Key for your Heroku account. Check it in https://dashboard.heroku.com/account"
+
     },
     "HEROKU_APP_NAME": {
       "description": "Heroku app to monitor"
