@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/goodenough/wwwapp.svg?branch=master&maxAge=0)](https://travis-ci.org/goodenough/wwwapp) [![Coverage Status](https://coveralls.io/repos/github/goodenough/wwwapp/badge.svg?t=TsRjda)](https://coveralls.io/github/goodenough/wwwapp)
+[![Build Status](https://travis-ci.org/goodenough/wwwapp.svg?branch=master&maxAge=0)](https://travis-ci.org/goodenough/wwwapp) [![Coverage Status](https://coveralls.io/repos/github/goodenough/wwwapp/badge.svg)](https://coveralls.io/github/goodenough/wwwapp)
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/abernier_.svg)](https://saucelabs.com/u/abernier_)
 
