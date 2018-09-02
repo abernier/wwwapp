@@ -2,6 +2,7 @@
 FROM node:8.10.0-alpine
 
 RUN apk add --no-cache \
+        curl \
 	wget \
 	ca-certificates \
 	make

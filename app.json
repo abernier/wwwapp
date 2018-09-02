@@ -2,7 +2,7 @@
   "name": "wwwapp",
   "stack": "container",
   "scripts": {
-    "postdeploy": "bin/heroku-appjson-postdeploy.sh"
+    "postdeploy": "sh bin/heroku-appjson-postdeploy.sh"
   },
   "env": {
     "HEROKU_API_KEY": {
