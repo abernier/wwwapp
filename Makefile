@@ -62,7 +62,7 @@ test: test-unit test-functional
 
 .PHONY: test-unit
 test-unit: ./node_modules/.bin/tap
-	wwwapp_recaptcha_id="" ./node_modules/.bin/tap --node-arg=--inspect=0.0.0.0:9229 --bail -R spec test/unit/*.js
+	wwwapp_recaptcha_id="" ./node_modules/.bin/tap --node-arg=--inspect=0.0.0.0:9229 --bail -R spec test/unit/*.js --cov
 
 .PHONY: test-functional
 test-functional: ./node_modules/.bin/tap
