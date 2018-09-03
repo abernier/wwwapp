@@ -10,6 +10,7 @@ RUN apk add --no-cache \
 ARG wwwapp_env
 ARG wwwapp_www_host__port
 ARG wwwapp_www_nodedebug__port
+ARG wwwapp_www_proxy__port
 
 ENV USERNAME node
 ENV HOME /home/$USERNAME
