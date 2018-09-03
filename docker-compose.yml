@@ -16,6 +16,8 @@ services:
       context: .
       args:
         - wwwapp_env
+        - wwwapp_www_host__port
+        - wwwapp_www_nodedebug__port
     command: sh -c 'dockerize -wait tcp://$wwwapp_postgres_uri__hostname:$wwwapp_postgres_uri__port -wait tcp://$wwwapp_redis_uri__hostname:$wwwapp_redis_uri__port -wait tcp://$wwwapp_smtp_uri__hostname:$wwwapp_smtp_uri__port sh -c "npm start"'
     ports:
       - "$wwwapp_www_host__port:$wwwapp_www_host__port"
@@ -59,6 +61,8 @@ services:
       context: .
       args:
         - wwwapp_env=development
+        - wwwapp_www_host__port
+        - wwwapp_www_nodedebug__port
     command: sh -c 'dockerize -wait http://$wwwapp_www_host__hostname:$wwwapp_www_host__port -wait http://$wwwapp_selenium_hub__hostname:$wwwapp_selenium_hub__port -wait tcp://chrome:5900 -timeout 90s sh -c "make test-functional"'
     depends_on:
       - www
@@ -116,6 +120,8 @@ services:
       context: .
       args:
         - wwwapp_env=development
+        - wwwapp_www_host__port
+        - wwwapp_www_nodedebug__port
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
