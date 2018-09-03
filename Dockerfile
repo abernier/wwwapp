@@ -58,7 +58,7 @@ RUN ls -al && make ENV=$wwwapp_env
 # 	&& chown -R $USERNAME:$USERNAME $APP_PATH
 #USER $USERNAME
 
-EXPOSE $$wwwapp_www_host__port
+EXPOSE $wwwapp_www_host__port
 EXPOSE $wwwapp_www_proxy__port
 EXPOSE $wwwapp_www_nodedebug__port
 
