@@ -10,7 +10,7 @@ SCRIPTPATH=$DIR/scripts
 
 commands="help config dev start test test-unit test-functional deploy"
 
-./bin/env $DIR/env*.sh | ./bin/stripenv >/tmp/.wwwappenv
+./bin/env ./env*.sh | ./bin/stripenv >/tmp/.wwwappenv
 #echo ".wwwappenv contents:"
 #cat /tmp/.wwwappenv
 
@@ -76,7 +76,7 @@ else
         #     echo "$SCRIPTPATH/../scripts/$1.sh --help"
         # fi
     else
-        # execute script and passing remaining args to it
-        $SCRIPTPATH/$command.sh $@ && exit 0 || exit 1
+        # execute script (with environment variables) and passing remaining args to it
+        env `cat /tmp/.easyplvrendererenv` sh -c "$SCRIPTPATH/$command.sh $@ && exit 0 || exit 1" || exit 1
     fi
 fi
