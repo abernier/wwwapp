@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "make start"
+    "start": "env `./bin/env ./env*.sh | ./bin/stripenv` sh -c 'node server'"
   },
   "bin": {
     "wwwappconf": "./bin/conf.js"
