@@ -2,7 +2,7 @@
 FROM node:8.10.0-alpine
 
 RUN apk add --no-cache \
-        curl \
+  curl \
 	wget \
 	ca-certificates \
 	make
@@ -10,8 +10,8 @@ RUN apk add --no-cache \
 ENV USERNAME node
 ENV HOME /home/$USERNAME
 ENV APP_PATH $HOME/app
-ENV APP_PORT 3000
-ENV DEBUGGER_PORT 9229
+ENV APP_PORT $wwwapp_www_host__port
+ENV DEBUGGER_PORT $wwwapp_www_nodedebug__port
 
 ARG wwwapp_env
 
@@ -58,9 +58,7 @@ RUN ls -al && make ENV=$wwwapp_env
 #USER $USERNAME
 
 EXPOSE $APP_PORT
-EXPOSE 8888
+EXPOSE $wwwapp_www_proxy__port
 EXPOSE $DEBUGGER_PORT
 
 CMD ["npm", "start"]
-
-
