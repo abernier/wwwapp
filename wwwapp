@@ -77,6 +77,6 @@ else
         # fi
     else
         # execute script (with environment variables) and passing remaining args to it
-        env `cat /tmp/.easyplvrendererenv` sh -c "$SCRIPTPATH/$command.sh $@ && exit 0 || exit 1" || exit 1
+        env `cat /tmp/.wwwappenv` sh -c "$SCRIPTPATH/$command.sh $@ && exit 0 || exit 1" || exit 1
     fi
 fi
