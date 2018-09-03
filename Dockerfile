@@ -7,16 +7,14 @@ RUN apk add --no-cache \
 	ca-certificates \
 	make
 
+ENV USERNAME node
+ENV HOME /home/$USERNAME
+ENV APP_PATH $HOME/app
+
 ARG wwwapp_env
 ARG wwwapp_www_host__port
 ARG wwwapp_www_nodedebug__port
 ARG wwwapp_www_proxy__port
-
-ENV USERNAME node
-ENV HOME /home/$USERNAME
-ENV APP_PATH $HOME/app
-ENV APP_PORT $wwwapp_www_host__port
-ENV DEBUGGER_PORT $wwwapp_www_nodedebug__port
 
 #
 # Dockerize (see: https://github.com/jwilder/dockerize#for-alpine-images)
@@ -60,8 +58,8 @@ RUN ls -al && make ENV=$wwwapp_env
 # 	&& chown -R $USERNAME:$USERNAME $APP_PATH
 #USER $USERNAME
 
-EXPOSE $APP_PORT
+EXPOSE $$wwwapp_www_host__port
 EXPOSE $wwwapp_www_proxy__port
-EXPOSE $DEBUGGER_PORT
+EXPOSE $wwwapp_www_nodedebug__port
 
 CMD ["npm", "start"]
