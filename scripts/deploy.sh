@@ -56,6 +56,12 @@ done
 if [ ! -z "$herokuapp" ]; then
 	heroku --version || exit 1
 
+	# Make a copy of the current directory
+	origdir=`pwd`
+	copydir=`mktemp -d /tmp/wwwapp.XXX`
+	cp -a . $copydir
+	cd $copydir
+
 	make clean && heroku container:login && heroku container:push web --app $herokuapp || exit 1
 	heroku container:release web --app $herokuapp || exit 1
 else
