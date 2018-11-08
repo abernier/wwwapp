@@ -60,6 +60,13 @@ module.exports = function () {
 
     next();
   });
+  
+  // {headjs} locals
+  app.use(function(req, res, next) {
+    res.locals.headjs = require('fs').readFileSync(require('path').resolve(__dirname, `../public/head.js`), 'utf8')
+
+    next();
+  });
 
   // Default 'Accept' and 'Content-Type'
   app.use(function (req, res, next) {
