@@ -4,6 +4,10 @@ wwwapp_www_host__protocol="http"
 wwwapp_www_host__hostname="localhost"
 wwwapp_www_host__port="3000"
 
+wwwapp_www_proxy__port="8888"
+
+wwwapp_www_nodedebug__port="9229"
+
 #
 
 wwwapp_www_static_maxage="31536000"

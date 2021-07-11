@@ -2,7 +2,7 @@
 FROM node:8.10.0-alpine
 
 RUN apk add --no-cache \
-        curl \
+  curl \
 	wget \
 	ca-certificates \
 	make
@@ -10,10 +10,11 @@ RUN apk add --no-cache \
 ENV USERNAME node
 ENV HOME /home/$USERNAME
 ENV APP_PATH $HOME/app
-ENV APP_PORT 3000
-ENV DEBUGGER_PORT 9229
 
 ARG wwwapp_env
+ARG wwwapp_www_host__port
+ARG wwwapp_www_nodedebug__port
+ARG wwwapp_www_proxy__port
 
 #
 # Dockerize (see: https://github.com/jwilder/dockerize#for-alpine-images)
@@ -57,10 +58,8 @@ RUN ls -al && make ENV=$wwwapp_env
 # 	&& chown -R $USERNAME:$USERNAME $APP_PATH
 #USER $USERNAME
 
-EXPOSE $APP_PORT
+EXPOSE 3000
 EXPOSE 8888
-EXPOSE $DEBUGGER_PORT
+EXPOSE 9229
 
 CMD ["npm", "start"]
-
-

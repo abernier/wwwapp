@@ -16,10 +16,13 @@ services:
       context: .
       args:
         - wwwapp_env
-    command: sh -c 'dockerize -wait tcp://$$wwwapp_postgres_uri__hostname:$$wwwapp_postgres_uri__port -wait tcp://$$wwwapp_redis_uri__hostname:$$wwwapp_redis_uri__port -wait tcp://$$wwwapp_smtp_uri__hostname:$$wwwapp_smtp_uri__port sh -c "npm start"'
+        - wwwapp_www_host__port
+        - wwwapp_www_nodedebug__port
+        - wwwapp_www_proxy__port
+    command: sh -c 'dockerize -wait tcp://$wwwapp_postgres_uri__hostname:$wwwapp_postgres_uri__port -wait tcp://$wwwapp_redis_uri__hostname:$wwwapp_redis_uri__port -wait tcp://$wwwapp_smtp_uri__hostname:$wwwapp_smtp_uri__port sh -c "npm start"'
     ports:
-      - "3000:3000"
-      - "9229:9229"
+      - "$wwwapp_www_host__port:$wwwapp_www_host__port"
+      - "$wwwapp_www_nodedebug__port:$wwwapp_www_nodedebug__port"
     depends_on:
       - postgres
       - redis
@@ -30,16 +33,16 @@ services:
   postgres:
     image: postgres:10.1-alpine
     ports:
-      - "5432:5432"
+      - "$wwwapp_postgres_uri__port:$wwwapp_postgres_uri__port"
   redis:
     image: redis:4.0.2-alpine
     ports:
-      - "6379:6379"
+      - "$wwwapp_redis_uri__port:$wwwapp_redis_uri__port"
   mailcatcher:
     image: tophfr/mailcatcher:0.6.5_2
     ports:
-      - "1025:25"
-      - "1080:80"
+      - "1025:$wwwapp_smtp_uri__port"
+      - "1080:$wwwapp_inbox_uri__port"
 
   ######## ########  ######  ######## 
      ##    ##       ##    ##    ##    
@@ -59,7 +62,10 @@ services:
       context: .
       args:
         - wwwapp_env=development
-    command: sh -c 'dockerize -wait http://$$wwwapp_www_host__hostname:$$wwwapp_www_host__port -wait http://$$wwwapp_selenium_hub__hostname:$$wwwapp_selenium_hub__port -wait tcp://chrome:5900 -timeout 90s sh -c "make test-functional"'
+        - wwwapp_www_host__port
+        - wwwapp_www_nodedebug__port
+        - wwwapp_www_proxy__port
+    command: sh -c 'dockerize -wait http://$wwwapp_www_host__hostname:$wwwapp_www_host__port -wait http://$wwwapp_selenium_hub__hostname:$wwwapp_selenium_hub__port -wait tcp://chrome:5900 -timeout 90s sh -c "make test-functional"'
     depends_on:
       - www
       - mailcatcher
@@ -72,7 +78,7 @@ services:
   selenium-hub:
     image: selenium/hub:3.8.1-aluminum
     ports:
-      - "4444:4444"
+      - "$wwwapp_selenium_hub__port:$wwwapp_selenium_hub__port"
   chrome:
     image: selenium/node-chrome-debug:3.8.1-aluminum
     ports:
@@ -82,8 +88,8 @@ services:
     links:
       - selenium-hub:hub
     environment:
-      - HUB_PORT_4444_TCP_ADDR=selenium-hub
-      - HUB_PORT_4444_TCP_PORT=4444
+      - HUB_PORT_4444_TCP_ADDR=$wwwapp_selenium_hub__hostname
+      - HUB_PORT_4444_TCP_PORT=$wwwapp_selenium_hub__port
     volumes:
       - /dev/shm:/dev/shm
   firefox:
@@ -95,15 +101,15 @@ services:
     links:
       - selenium-hub:hub
     environment:
-      - HUB_PORT_4444_TCP_ADDR=selenium-hub
-      - HUB_PORT_4444_TCP_PORT=4444
+      - HUB_PORT_4444_TCP_ADDR=$wwwapp_selenium_hub__hostname
+      - HUB_PORT_4444_TCP_PORT=$wwwapp_selenium_hub__port
     shm_size: 2g
 
   # https://github.com/abernier/docker-sauce-connect
   sc:
     image: abernier/docker-sauce-connect
     env_file: /tmp/.wwwappenv
-    command: sh -c 'sc -u $$wwwapp_saucelabs_username -k $$wwwapp_saucelabs_accesskey'
+    command: sh -c 'sc -u $wwwapp_saucelabs_username -k $wwwapp_saucelabs_accesskey'
     ports:
       - "4445:4445"
 
@@ -116,17 +122,20 @@ services:
       context: .
       args:
         - wwwapp_env=development
+        - wwwapp_www_host__port
+        - wwwapp_www_nodedebug__port
+        - wwwapp_www_proxy__port
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
-    command: sh -c 'dockerize -wait tcp://$$wwwapp_postgres_uri__hostname:$$wwwapp_postgres_uri__port -wait tcp://$$wwwapp_redis_uri__hostname:$$wwwapp_redis_uri__port -wait tcp://$$wwwapp_smtp_uri__hostname:$$wwwapp_smtp_uri__port sh -c "make test-unit"'
+    command: sh -c 'dockerize -wait tcp://$wwwapp_postgres_uri__hostname:$wwwapp_postgres_uri__port -wait tcp://$wwwapp_redis_uri__hostname:$wwwapp_redis_uri__port -wait tcp://$wwwapp_smtp_uri__hostname:$wwwapp_smtp_uri__port sh -c "make test-unit"'
     depends_on:
       - postgres
       - redis
       - mailcatcher
     ports:
-      - "3000:3000"
-      - "9229:9229"
+      - "$wwwapp_www_host__port:$wwwapp_www_host__port"
+      - "$wwwapp_www_nodedebug__port:$wwwapp_www_nodedebug__port"
 
 volumes:
   node_modules:

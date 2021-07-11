@@ -68,6 +68,12 @@ test-unit: ./node_modules/.bin/tap
 test-functional: ./node_modules/.bin/tap
 	./node_modules/.bin/tap test/functional/index.js
 
+.PHONY: start
+start:
+	node server
+
+##
+
 .PHONY: mostlyclean
 mostlyclean:
 	rm -Rf public/index.css public/head.js public/vendor.js public/index.js tmp/md5public.json
